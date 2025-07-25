@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Task Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+</head>
+<body>
+    <div id="wrapper">
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom fixed-top" id="main-admin-navbar">
+                <div class="container-fluid">
+                    <a class="navbar-brand d-flex align-items-center" href="#">
+                        <img src="images/SCM1.png" alt="Company Logo" class="navbar-logo me-2">
+                    </a>
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a href="#manage-user" class="nav-link active" data-section="manage-user">Manage User</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#masters" class="nav-link" data-section="masters">Masters</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#create-task" class="nav-link" data-section="create-task">Create Task</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#all-tasks" class="nav-link" data-section="all-tasks">All Task</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#view-update-tasks" class="nav-link" data-section="view-update-tasks">View Current Task Status</a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item-w">
+                                <span class="navbar-text me-3 d-none d-lg-inline">Welcome, Admin!</span>
+                            </li>
+                            <li class="nav-item">
+                                <button class="btn btn-danger" id="logoutBtn">Logout</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container-fluid p-4 main-content-area">
+                <div id="manage-user-section" class="content-section">
+                    <h3 class="p-2">Manage Employees & Logins</h3>
+
+                    <div class="card mb-4">
+                        <div class="card-header">Add New Employee</div>
+                        <div class="card-body">
+                            <form id="addEmployeeForm" class="row g-3 align-items-end">
+                                <div class="col-md-3">
+                                    <label for="employeeId" class="form-label">Employee ID (Unique)</label>
+                                    <input type="text" class="form-control" id="employeeId" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="employeeName" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="employeeName" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="employeeDesignation" class="form-label">Designation</label>
+                                    <input type="text" class="form-control" id="employeeDesignation" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="employeeDepartment" class="form-label">Department</label>
+                                    <input type="text" class="form-control" id="employeeDepartment" required>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary">Add Employee</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header">Manage Login & Pass</div>
+                        <div class="card-body">
+                            <form id="manageLoginForm" class="row g-3 align-items-end">
+                                <div class="col-md-3">
+                                    <label for="loginEmployeeId" class="form-label">Employee ID</label>
+                                    <select class="form-select select2-enabled" id="loginEmployeeId" required>
+                                        <option value="">Select Employee</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="username" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="userRole" class="form-label">Role</label>
+                                    <select class="form-select" id="userRole" required>
+                                        <option value="">Select Role</option>
+                                        <option value="employee">Employee</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-success" id="createLoginBtn">Create Login</button>
+                                    <button type="button" class="btn btn-info d-none" id="updateLoginBtn">Update Login</button>
+                                    <button type="button" class="btn btn-secondary d-none" id="cancelLoginEditBtn">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">Employee & Login List</div>
+                        <div class="card-body">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Designation</th>
+                                        <th>Department</th>
+                                        <th>Organization</th>
+                                        <th>Username</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="employeesTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="employeeEditModal" tabindex="-1" aria-labelledby="employeeEditModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title" id="employeeEditModalLabel">Edit Employee & Login Details (<span id="editEmployeeModalId"></span>)</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editEmployeeDetailsForm">
+                                <input type="hidden" id="currentEditEmployeeId">
+                                <h6 class="text-primary mb-3">Employee Details</h6>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label for="editEmployeeName" class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="editEmployeeName" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="editEmployeeDesignation" class="form-label">Designation</label>
+                                        <input type="text" class="form-control" id="editEmployeeDesignation" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="editEmployeeDepartment" class="form-label">Department</label>
+                                        <input type="text" class="form-control" id="editEmployeeDepartment" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="editEmployeeOrganization" class="form-label">Organization</label>
+                                        <select class="form-select select2-enabled" id="editEmployeeOrganization">
+                                            <option value="">Select Organization</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <hr class="my-4">
+                                <h6 class="text-success mb-3">Login Details (Optional)</h6>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="editLoginUsername" class="form-label">Username</label>
+                                        <input type="text" class="form-control" id="editLoginUsername" placeholder="Leave blank if no login" >
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="editLoginPassword" class="form-label">New Password</label>
+                                        <input type="password" class="form-control" id="editLoginPassword" placeholder="Leave blank to keep current" >
+                                        <small class="form-text text-muted">Enter new password only if changing. Minimum 6 characters.</small>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="editLoginRole" class="form-label">Role</label>
+                                        <select class="form-select" id="editLoginRole">
+                                            <option value="">No Login</option>
+                                            <option value="employee">Employee</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                        <small class="form-text text-muted">Changing role requires username/password.</small>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="editEmployeeStatus" class="form-label">Employee Status</label>
+                                        <select class="form-select" id="editEmployeeStatus">
+                                            <option value="true">Active</option>
+                                            <option value="false">Inactive</option>
+                                        </select>
+                                        <small class="form-text text-danger">Setting to Inactive will discard login.</small>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="saveEmployeeChangesBtn">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="masters-section" class="content-section d-none">
+                <h3>Masters</h3>
+                <p>Manage various master data like Organizations, Processes, Employees, and Campaigns.</p>
+
+                <ul class="nav nav-tabs mb-3" id="masterTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="org-tab" data-bs-toggle="tab" data-bs-target="#organization-master-pane" type="button" role="tab" aria-controls="organization-master-pane" aria-selected="true" data-master-pane="organization-master">Organization Master</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="process-tab" data-bs-toggle="tab" data-bs-target="#process-master-pane" type="button" role="tab" aria-controls="process-master-pane" aria-selected="false" data-master-pane="process-master">Process Master</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="employee-tab" data-bs-toggle="tab" data-bs-target="#employee-master-pane" type="button" role="tab" aria-controls="employee-master-pane" aria-selected="false" data-master-pane="employee-master">Employee Master</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="campaign-tab" data-bs-toggle="tab" data-bs-target="#campaign-master-pane" type="button" role="tab" aria-controls="campaign-master-pane" aria-selected="false" data-master-pane="campaign-master">Campaign Master</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane fade show active master-content-pane" id="organization-master-pane" role="tabpanel" aria-labelledby="org-tab">
+                        <h4>Organization Master</h4>
+                        <form id="orgForm" class="mb-3">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="organizationNameInput" placeholder="New Organization Name" required>
+                                <button class="btn btn-primary" type="submit">Add Organization</button>
+                            </div>
+                        </form>
+                        <table class="table table-bordered">
+                        <thead><tr><th>ID</th><th>Organization Name</th><th>Actions</th></tr></thead> <tbody id="organizationsTableBody"></tbody> </table>
+                    </div>
+
+                    <div class="tab-pane fade master-content-pane" id="process-master-pane" role="tabpanel" aria-labelledby="process-tab">
+                        <h4>Process Master</h4>
+                        <form id="processForm" class="row g-3 align-items-center mb-4 p-3 border rounded bg-light">
+                            <div class="col-md-3">
+                                <label for="processOrganizationSelect" class="form-label">Organization</label> <select class="form-select select2-enabled" id="processOrganizationSelect" required>
+                                    <option value="">Select Organization</option>
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+                                <label for="processNameInput" class="form-label">New Process Name</label>
+                                <input type="text" id="processNameInput" class="form-control" placeholder="Enter Process Name" required>
+                            </div>
+                            <div class="col-md-3 d-flex align-self-end">
+                                <button type="submit" class="btn btn-success w-100">Add Process</button>
+                            </div>
+                        </form>
+                        <table class="table table-bordered">
+                            <thead><tr><th>ID</th><th>Process Name</th><th>Organization</th><th>Actions</th></tr></thead>
+                            <tbody id="processesTableBody"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="tab-pane fade master-content-pane" id="employee-master-pane" role="tabpanel" aria-labelledby="employee-tab">
+                        <h4>Employee Master</h4>
+                        <form id="addEmployeeForm" class="row g-3 align-items-end"> <div class="col-md-3">
+                                <label for="employeeId" class="form-label">Employee ID (Unique)</label>
+                                <input type="text" class="form-control" id="employeeId" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="employeeName" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="employeeName" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="employeeDesignation" class="form-label">Designation</label>
+                                <input type="text" class="form-control" id="employeeDesignation" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="employeeDepartment" class="form-label">Department</label>
+                                <input type="text" class="form-control" id="employeeDepartment" required>
+                            </div>
+                             <div class="col-md-3"> <label for="employeeOrganizationSelect" class="form-label">Organization</label>
+                                <select class="form-select select2-enabled" id="employeeOrganizationSelect" required>
+                                    <option value="">Select Organization</option>
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary">Add Employee</button>
+                            </div>
+                        </form>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th> <th>Designation</th>
+                                    <th>Department</th>
+                                    <th>Organization</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="employeeMasterTableBody"></tbody> 
+                        </table>
+                    </div>
+
+                    <div class="tab-pane fade master-content-pane" id="campaign-master-pane" role="tabpanel" aria-labelledby="campaign-tab">
+                        <h4>Campaign Master</h4>
+                        <form id="campaignForm" class="row g-3 align-items-center mb-4 p-3 border rounded bg-light">
+                            <div class="col-md-3">
+                                <label for="campaignOrganizationSelect" class="form-label">Organization</label>
+                                <select class="form-select select2-enabled" id="campaignOrganizationSelect" required>
+                                    <option value="">Select Organization</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="campaignProcessSelect" class="form-label">Process</label>
+                                <select class="form-select select2-enabled" id="campaignProcessSelect" required>
+                                    <option value="">Select Process</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="campaignNameInput" class="form-label">New Campaign Name</label>
+                                <input type="text" id="campaignNameInput" class="form-control" placeholder="Enter Campaign Name" required>
+                            </div>
+                            <div class="col-md-2 d-flex align-self-end">
+                                <button type="submit" class="btn btn-success w-100">Add Campaign</button>
+                            </div>
+                        </form>
+                        <table class="table table-bordered">
+                            <thead><tr><th>ID</th><th>Campaign Name</th><th>Organization</th><th>Process</th><th>Actions</th></tr></thead>
+                            <tbody id="campaignsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="create-task-section" class="content-section d-none">
+                <h3>Create New Task</h3>
+                <p>Assign and manage new tasks. Select multiple month-year-region combinations for lead and prospect assignments.</p>
+
+                <form id="createTaskForm">
+                    <div class="row mb-4 align-items-end p-3 border rounded bg-light">
+                        <div class="col-md-3">
+                            <label for="taskDate" class="form-label fw-bold">Task Date</label>
+                            <input type="text" id="taskDate" class="form-control datepicker" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="taskOrganizationSelect" class="form-label fw-bold">Organization</label>
+                            <select id="taskOrganizationSelect" class="form-select select2-enabled" required></select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="taskProcessSelect" class="form-label fw-bold">Process</label>
+                            <select id="taskProcessSelect" class="form-select select2-enabled" required></select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="taskEmployeeSelect" class="form-label fw-bold">Employee</label>
+                            <select id="taskEmployeeSelect" class="form-select select2-enabled" required></select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card mb-3 task-card">
+                                <div class="card-header bg-info text-white">Leads Information</div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="leadsDateFrom" class="form-label">Date From</label>
+                                            <input type="text" id="leadsDateFrom" class="form-control datepicker">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="leadsDateTo" class="form-label">Date To</label>
+                                            <input type="text" id="leadsDateTo" class="form-control datepicker">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="assignment-builder d-flex flex-wrap align-items-end mb-3 gap-2">
+                                        <div class="flex-grow-1">
+                                            <label for="leadsAssignmentMonth" class="form-label">Month</label>
+                                            <select id="leadsAssignmentMonth" class="form-select">
+                                                <option value="" selected disabled hidden>Select Month</option>
+                                                <option value="Jan">January</option><option value="Feb">February</option><option value="Mar">March</option><option value="Apr">April</option><option value="May">May</option><option value="Jun">June</option><option value="Jul">July</option><option value="Aug">August</option><option value="Sep">September</option><option value="Oct">October</option><option value="Nov">November</option><option value="Dec">December</option>
+                                            </select>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <label for="leadsAssignmentYear" class="form-label">Year</label>
+                                            <select id="leadsAssignmentYear" class="form-select"></select>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <label for="leadsAssignmentRegion" class="form-label">Region</label>
+                                            <select id="leadsAssignmentRegion" class="form-select">
+                                                <option value="" selected disabled hidden>Select Region</option>
+                                                <option value="All">All</option>
+                                                <option value="North">North</option><option value="East">East</option><option value="South">South</option><option value="West">West</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <button type="button" id="leadsAddAssignmentBtn" class="btn btn-outline-primary" title="Add to available list">➕</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="dual-listbox-wrapper d-flex align-items-center mb-3">
+                                        <select id="leftBoxLeads" multiple size="8" class="form-select me-2"></select>
+                                        <div class="d-flex flex-column mx-2">
+                                            <button type="button" class="btn btn-sm btn-outline-primary mb-1" id="leadsMoveRightBtn">➡️</button>
+                                            <button type="button" class="btn btn-sm btn-outline-primary" id="leadsMoveLeftBtn">⬅️</button>
+                                        </div>
+                                        <select id="rightBoxLeads" multiple size="8" class="form-select ms-2"></select>
+                                    </div>
+                                    <hr>
+                                    <div class="mb-3">
+                                        <label for="leadsQuantityCampaignMaster" class="form-label">Campaign</label>
+                                        <select id="leadsQuantityCampaignMaster" class="form-select select2-enabled"></select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="leadsQty" class="form-label">Total Leads Qty</label>
+                                        <input id="leadsQty" class="form-control" min="0" placeholder="0">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="convertToProspects" class="form-label">Convert To Prospects (Qty)</label>
+                                        <input id="convertToProspects" class="form-control" min="0" placeholder="0">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="leadsComment" class="form-label">Comment</label>
+                                        <textarea id="leadsComment" class="form-control" rows="2"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="card mb-3 task-card">
+                                <div class="card-header bg-success text-white">Prospects Information</div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="prospectsDateFrom" class="form-label">Date From</label>
+                                            <input type="text" id="prospectsDateFrom" class="form-control datepicker">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="prospectsDateTo" class="form-label">Date To</label>
+                                            <input type="text" id="prospectsDateTo" class="form-control datepicker">
+                                        </div>
+                                    </div>
+
+                                    <div class="assignment-builder d-flex flex-wrap align-items-end mb-3 gap-2">
+                                        <div class="flex-grow-1">
+                                            <label for="prospectsAssignmentMonth" class="form-label">Month</label>
+                                            <select id="prospectsAssignmentMonth" class="form-select">
+                                                <option value="" selected disabled hidden>Select Month</option>
+                                                <option value="Jan">January</option><option value="Feb">February</option><option value="Mar">March</option><option value="Apr">April</option><option value="May">May</option><option value="Jun">June</option><option value="Jul">July</option><option value="Aug">August</option><option value="Sep">September</option><option value="Oct">October</option><option value="Nov">November</option><option value="Dec">December</option>
+                                            </select>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <label for="prospectsAssignmentYear" class="form-label">Year</label>
+                                            <select id="prospectsAssignmentYear" class="form-select"></select>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <label for="prospectsAssignmentRegion" class="form-label">Region</label>
+                                            <select id="prospectsAssignmentRegion" class="form-select">
+                                                <option value="" selected disabled hidden>Select Region</option>
+                                                <option value="All">All</option>
+                                                <option value="North">North</option><option value="East">East</option><option value="South">South</option><option value="West">West</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <button type="button" id="prospectsAddAssignmentBtn" class="btn btn-outline-primary" title="Add to available list">➕</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="dual-listbox-wrapper d-flex align-items-center mb-3">
+                                        <select id="leftBoxProspects" multiple size="8" class="form-select me-2"></select>
+                                        <div class="d-flex flex-column mx-2">
+                                            <button type="button" class="btn btn-sm btn-outline-primary mb-1" id="prospectsMoveRightBtn">➡️</button>
+                                            <button type="button" class="btn btn-sm btn-outline-primary" id="prospectsMoveLeftBtn">⬅️</button>
+                                        </div>
+                                        <select id="rightBoxProspects" multiple size="8" class="form-select ms-2"></select>
+                                    </div>
+                                    <hr>
+                                    <div class="mb-3">
+                                        <label for="prospectsQuantityCampaignMaster" class="form-label">Campaign</label>
+                                        <select id="prospectsQuantityCampaignMaster" class="form-select select2-enabled"></select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="prospectsQty" class="form-label">Total Prospects Qty</label>
+                                        <input id="prospectsQty" class="form-control" min="0" placeholder="0">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="convertToWon" class="form-label">Convert To Won (Qty)</label>
+                                            <input id="convertToWon" class="form-control" min="0" placeholder="0">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="employeeSaleTarget" class="form-label">Sale Target (in Lacs)</label>
+                                            <input id="employeeSaleTarget" class="form-control" min="0" step="any" placeholder="0.0">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="prospectsComment" class="form-label">Comment</label>
+                                        <textarea id="prospectsComment" class="form-control" rows="2"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-primary btn-lg">Create Task</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="all-tasks-section" class="content-section d-none">
+                <h3>All Tasks</h3>
+                <p>View, filter, and analyze all tasks assigned across the organization.</p>
+
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <input type="text" id="universalTaskSearchInput" class="form-control" placeholder="Search by Task ID, Employee, or Comment..." aria-label="Search tasks">
+                            <button class="btn btn-outline-secondary" type="button" id="clearUniversalSearchBtn"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button class="btn btn-info me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">
+                            <i class="fas fa-filter"></i> Filter Tasks
+                        </button>
+                        <button class="btn btn-secondary" id="clearAllMainFiltersBtn">
+                            <i class="fas fa-trash-alt"></i> Clear Filters
+                        </button>
+                    </div>
+                </div>
+
+                <div id="activeFiltersDisplay" class="mb-3 d-flex flex-wrap align-items-center">
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Organization</th>
+                                <th>Process</th>
+                                <th>Employee Name</th>
+                                <th>Leads Date (From-To)</th>
+                                <th>Leads Month-Year</th>
+                                <th>Leads Region</th>
+                                <th>Leads Campaign</th>
+                                <th>Leads Qty</th>
+                                <th>Conv. to Prospects</th>
+                                <th>Prospects Date (From-To)</th>
+                                <th>Prospects Month-Year</th>
+                                <th>Prospects Region</th>
+                                <th>Prospects Campaign</th>
+                                <th>Prospects Qty</th>
+                                <th>Conv. to Won</th>
+                                <th>Sales (Rs Lacs)</th>
+                                <th class="remarks-column">Remarks</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allTasksTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="view-update-tasks-section" class="content-section d-none">
+                <h3>View Current Task Status</h3> <p>Admin can view current task progress and details here.</p> <div class="row mb-3">
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <input type="text" id="universalTaskSearchInput" class="form-control" placeholder="Search by Task ID, Employee, or Comment..." aria-label="Search tasks">
+                            <button class="btn btn-outline-secondary" type="button" id="clearUniversalSearchBtn"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button class="btn btn-info me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">
+                            <i class="fas fa-filter"></i> Filter Tasks
+                        </button>
+                        <button class="btn btn-secondary" id="clearAllViewFiltersBtn">
+                            <i class="fas fa-trash-alt"></i> Clear Filters
+                        </button>
+                    </div>
+                </div>
+
+                <div id="activeFiltersDisplayView" class="mb-3 d-flex flex-wrap align-items-center">
+                    </div>
+
+                <div class="card">
+                    <div class="card-header">Current Task Status List</div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Task ID</th>
+                                        <th>Employee Name</th>
+                                        <th>Leads Date (From-To)</th>
+                                        <th>Leads Qty</th>
+                                        <th>Conv. to Prospects</th>
+                                        <th>Active Conv. to Prospects</th> <th>Prospects Date (From-To)</th>
+                                        <th>Prospects Qty</th>
+                                        <th>Conv. to Won</th>
+                                        <th>Active Conv. to Won</th> <th>Sales (Rs Lacs)</th>
+                                        <th>Active Sales (Rs Lacs)</th> 
+                                        <th class="remarks-column">Remarks</th>
+                                        </tr>
+                                </thead>
+                                <tbody id="filteredTasksTableBody">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="taskEditModal" tabindex="-1" aria-labelledby="taskEditModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="taskEditModalLabel">Edit Task <span id="editTaskModalId" class="text-primary"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editTaskForm">
+                        <input type="hidden" id="editTaskId">
+
+                        <div class="row mb-4 align-items-end p-3 border rounded bg-light">
+                            <div class="col-md-3">
+                                <label for="editTaskDate" class="form-label fw-bold">Task Date</label>
+                                <input type="text" id="editTaskDate" class="form-control datepicker" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="editOrganization" class="form-label fw-bold">Organization</label>
+                                <select id="editOrganization" class="form-select select2-enabled" required></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="editProcess" class="form-label fw-bold">Process</label>
+                                <select id="editProcess" class="form-select select2-enabled" required></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="editEmployee" class="form-label fw-bold">Employee</label>
+                                <select id="editEmployee" class="form-select select2-enabled" required></select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="card mb-3 task-card">
+                                    <div class="card-header bg-info text-white">Leads Information</div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="editLeadsDateFrom" class="form-label">Date From</label>
+                                                <input type="text" id="editLeadsDateFrom" class="form-control datepicker">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="editLeadsDateTo" class="form-label">Date To</label>
+                                                <input type="text" id="editLeadsDateTo" class="form-control datepicker">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="assignment-builder d-flex flex-wrap align-items-end mb-3 gap-2">
+                                            <div class="flex-grow-1">
+                                                <label for="editLeadsAssignmentMonth" class="form-label">Month</label>
+                                                <select id="editLeadsAssignmentMonth" class="form-select">
+                                                    <option value="" selected disabled hidden>Select Month</option>
+                                                    <option value="Jan">January</option><option value="Feb">February</option><option value="Mar">March</option><option value="Apr">April</option><option value="May">May</option><option value="Jun">June</option><option value="Jul">July</option><option value="Aug">August</option><option value="Sep">September</option><option value="Oct">October</option><option value="Nov">November</option><option value="Dec">December</option>
+                                                </select>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <label for="editLeadsAssignmentYear" class="form-label">Year</label>
+                                                <select id="editLeadsAssignmentYear" class="form-select"></select>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <label for="editLeadsAssignmentRegion" class="form-label">Region</label>
+                                                <select id="editLeadsAssignmentRegion" class="form-select">
+                                                    <option value="" selected disabled hidden>Select Region</option>
+                                                    <option value="All">All</option>
+                                                    <option value="North">North</option><option value="East">East</option><option value="South">South</option><option value="West">West</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <button type="button" id="editLeadsAddAssignmentBtn" class="btn btn-outline-primary" title="Add to available list">➕</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="dual-listbox-wrapper d-flex align-items-center mb-3">
+                                            <select id="leftBoxEditLeads" multiple size="8" class="form-select me-2"></select>
+                                            <div class="d-flex flex-column mx-2">
+                                                <button type="button" class="btn btn-sm btn-outline-primary mb-1" id="editLeadsMoveRightBtn">➡️</button>
+                                                <button type="button" class="btn btn-sm btn-outline-primary" id="editLeadsMoveLeftBtn">⬅️</button>
+                                            </div>
+                                            <select id="rightBoxEditLeads" multiple size="8" class="form-select ms-2"></select>
+                                        </div>
+                                        <hr>
+                                        <div class="mb-3">
+                                            <label for="editLeadsCampaign" class="form-label">Campaign</label>
+                                            <select id="editLeadsCampaign" class="form-select select2-enabled"></select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editLeadsQty" class="form-label">Total Leads Qty</label>
+                                            <input id="editLeadsQty" class="form-control" placeholder="0">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editConvertToProspects" class="form-label">Convert To Prospects (Qty)</label>
+                                            <input id="editConvertToProspects" class="form-control" placeholder="0">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editLeadsComment" class="form-label">Comment</label>
+                                            <textarea id="editLeadsComment" class="form-control" rows="2"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="card mb-3 task-card">
+                                    <div class="card-header bg-success text-white">Prospects Information</div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="editProspectsDateFrom" class="form-label">Date From</label>
+                                                <input type="text" id="editProspectsDateFrom" class="form-control datepicker">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="editProspectsDateTo" class="form-label">Date To</label>
+                                                <input type="text" id="editProspectsDateTo" class="form-control datepicker">
+                                            </div>
+                                        </div>
+
+                                        <div class="assignment-builder d-flex flex-wrap align-items-end mb-3 gap-2">
+                                            <div class="flex-grow-1">
+                                                <label for="editProspectsAssignmentMonth" class="form-label">Month</label>
+                                                <select id="editProspectsAssignmentMonth" class="form-select">
+                                                    <option value="" selected disabled hidden>Select Month</option>
+                                                    <option value="Jan">January</option><option value="Feb">February</option><option value="Mar">March</option><option value="Apr">April</option><option value="May">May</option><option value="Jun">June</option><option value="Jul">July</option><option value="Aug">August</option><option value="Sep">September</option><option value="Oct">October</option><option value="Nov">November</option><option value="Dec">December</option>
+                                                </select>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <label for="editProspectsAssignmentYear" class="form-label">Year</label>
+                                                <select id="editProspectsAssignmentYear" class="form-select"></select>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <label for="editProspectsAssignmentRegion" class="form-label">Region</label>
+                                                <select id="editProspectsAssignmentRegion" class="form-select">
+                                                    <option value="" selected disabled hidden>Select Region</option>
+                                                    <option value="All">All</option>
+                                                    <option value="North">North</option><option value="East">East</option><option value="South">South</option><option value="West">West</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <button type="button" id="editProspectsAddAssignmentBtn" class="btn btn-outline-primary" title="Add to available list">➕</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="dual-listbox-wrapper d-flex align-items-center mb-3">
+                                            <select id="leftBoxEditProspects" multiple size="8" class="form-select me-2"></select>
+                                            <div class="d-flex flex-column mx-2">
+                                                <button type="button" class="btn btn-sm btn-outline-primary mb-1" id="editProspectsMoveRightBtn">➡️</button>
+                                                <button type="button" class="btn btn-sm btn-outline-primary" id="editProspectsMoveLeftBtn">⬅️</button>
+                                            </div>
+                                            <select id="rightBoxEditProspects" multiple size="8" class="form-select ms-2"></select>
+                                        </div>
+                                        <hr>
+                                        <div class="mb-3">
+                                            <label for="editProspectsCampaign" class="form-label">Campaign</label>
+                                            <select id="editProspectsCampaign" class="form-select select2-enabled"></select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editProspectsQty" class="form-label">Total Prospects Qty</label>
+                                            <input id="editProspectsQty" class="form-control" placeholder="0">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="editConvertToWon" class="form-label">Convert To Won (Qty)</label>
+                                                <input id="editConvertToWon" class="form-control" placeholder="0">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="editEmployeeSaleTarget" class="form-label">Sale Target (in Lacs)</label>
+                                                <input id="editEmployeeSaleTarget" class="form-control" step="any" placeholder="0.0">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editProspectsComment" class="form-label">Comment</label>
+                                            <textarea id="editProspectsComment" class="form-control" rows="2"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <button type="button" id="saveTaskChangesBtn" class="btn btn-primary btn-lg me-2">Save Changes</button>
+                            <button type="button" id="toggleTaskActivationBtn" class="btn btn-warning btn-lg">Deactivate Task</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="filterOffcanvas" aria-labelledby="filterOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="filterOffcanvasLabel">Filter Options</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <form id="universalFilterForm">
+                <h6 class="text-primary mb-3">Filter by Task Details</h6>
+                <div class="mb-3">
+                    <label for="filterTaskDateFrom" class="form-label">Task Date (From)</label>
+                    <input type="text" id="filterTaskDateFrom" class="form-control datepicker-filter">
+                </div>
+                <div class="mb-3">
+                    <label for="filterTaskDateTo" class="form-label">Task Date (To)</label>
+                    <input type="text" id="filterTaskDateTo" class="form-control datepicker-filter">
+                </div>
+                <div class="mb-3">
+                    <label for="filterOrganization" class="form-label">Organization</label>
+                    <select id="filterOrganization" class="form-select select2-enabled-filter">
+                        <option value="">All</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="filterProcess" class="form-label">Process</label>
+                    <select id="filterProcess" class="form-select select2-enabled-filter">
+                        <option value="">All</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="filterEmployee" class="form-label">Employee</label>
+                    <select id="filterEmployee" class="form-select select2-enabled-filter">
+                        <option value="">All</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="filterStatus" class="form-label">Status</label>
+                    <select id="filterStatus" class="form-select select2-enabled-filter">
+                        <option value="">All Statuses</option>
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Overdue">Overdue</option>
+                    </select>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary mt-3">Apply Filters</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+    <script src="js/admin_dashboard.js"></script>
+</body>
+</html>

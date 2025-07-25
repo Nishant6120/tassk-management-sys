@@ -1,0 +1,267 @@
+body {
+    overflow-x: hidden;
+    padding: 0;
+}
+
+#wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#main-admin-navbar {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-image: linear-gradient(to right, #007bff, #0056b3);
+    background-size: 200% 100%;
+    transition: background-image 0.4s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+}
+
+#allTasksTableBody td:last-child { 
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#allTasksTableBody .edit-task-btn,
+#allTasksTableBody .toggle-task-status-btn {
+    margin: 0 4px;
+    padding: .375rem .75rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+}
+
+#main-admin-navbar .navbar-brand {
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+#main-admin-navbar .navbar-logo {
+    height: 35px;
+    width: 250px;
+    filter: brightness(0) invert(1);
+}
+
+#main-admin-navbar .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+}
+
+#main-admin-navbar .navbar-nav .nav-item-w {
+    margin-top: 5.5px;
+}
+
+#main-admin-navbar .navbar-nav .nav-link.active,
+#main-admin-navbar .navbar-nav .nav-link:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+#main-admin-navbar .navbar-text {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+#employeeOrganizationSelect + .select2-container {
+    width: 250px !important;
+    margin-right: 0.5rem;
+}
+
+#employeeOrganizationSelect + .select2-container .select2-selection__placeholder {
+    color: #6c757d;
+}
+
+#employeeOrganizationSelect + .select2-container--focus .select2-selection--single,
+#employeeOrganizationSelect + .select2-container--focus .select2-selection--multiple {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.main-content-area {
+    margin-top: 0;
+    padding-top: 25px;
+}
+
+.content-section {
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    margin: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.master-content-pane {
+    padding: 15px;
+    border: 1px solid #eee;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    background-color: #fff;
+}
+
+.remarks-column {
+    width: 25%;
+    min-width: 200px;
+    max-width: 300px;
+    white-space: normal;
+}
+
+#allTasksTableBody tr td:nth-child(18),
+#filteredTasksTableBody tr td:nth-child(13) {
+    width: 20%;
+    min-width: 150px;
+    max-width: 300px;
+    white-space: normal;
+    vertical-align: top;
+}
+
+/* NEW: Style for editable textarea in remarks column */
+.table textarea.form-control-sm {
+    min-height: 38px; /* Ensures it aligns with other inputs */
+    resize: vertical; /* Allows user to resize vertically if needed */
+}
+
+
+.assignment-builder {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+    margin-bottom: 1rem;
+    flex-wrap: wrap; 
+}
+
+.assignment-builder .form-group {
+    flex: 1 1 150px; 
+}
+
+.dual-listbox-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.dual-listbox-wrapper select {
+    width: 42%;
+    height: 150px; 
+    border-radius: 0.25rem;
+    border: 1px solid #ced4da;
+}
+
+.dual-listbox-wrapper .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.dual-listbox-wrapper .buttons button {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+#universalTaskSearchInput {
+    flex-grow: 1;
+}
+
+.btn-sm i {
+    font-size: 0.9em;
+}
+
+.form-label {
+    margin-bottom: 0.25rem;
+}
+
+#taskOrganizationSelect + .select2-container,
+#taskProcessSelect + .select2-container,
+#taskEmployeeSelect + .select2-container {
+    width: 100% !important;
+}
+
+#employeeSaleTarget {
+    width: 100%;
+}
+
+.tab-content .tab-pane.show.active {
+    display: block;
+}
+
+#menu-toggle {
+    display: none;
+}
+
+@media (max-width: 991.98px) {
+    #main-admin-navbar .navbar-nav {
+        flex-direction: column;
+    }
+    #main-admin-navbar .ms-auto {
+        margin-left: 0 !important;
+    }
+    #main-admin-navbar .navbar-text.d-none.d-lg-inline {
+        display: block !important;
+        margin-bottom: 10px;
+    }
+}
+
+.filter-pill {
+    background-color: #007bff;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.875rem;
+}
+
+.filter-pill .remove-filter {
+    cursor: pointer;
+    margin-left: 0.5rem;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.filter-pill .remove-filter:hover {
+    color: white;
+}
+
+.datepicker-filter {
+    display: block;
+    width: 100%;
+}
+
+.table th {
+    white-space: nowrap;
+}
+
+#view-update-tasks-section .table thead th:nth-child(6),
+#view-update-tasks-section .table thead th:nth-child(10),
+#view-update-tasks-section .table thead th:nth-child(12) {
+    background-color: #d4edda !important;
+    color: #155724 !important;
+    font-weight: bold !important;
+}
+
+#filteredTasksTableBody td:nth-child(6),
+#filteredTasksTableBody td:nth-child(10),
+#filteredTasksTableBody td:nth-child(12) {
+    background-color: #eaedf4 !important;
+    color: #1c7430 !important;
+    font-weight: 500 !important;
+}
+
